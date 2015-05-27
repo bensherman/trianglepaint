@@ -1,7 +1,7 @@
 class Tint {
-  int r = 0;
-  int g = 0;
-  int b = 0;
+  int r = 16;
+  int g = 16;
+  int b = 16;
   int step = 8;
 
   void moreRed() {
