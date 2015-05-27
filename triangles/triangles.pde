@@ -71,8 +71,7 @@ color triangleFill() {
   return fillColor;
 }
 
-boolean insideTriangle(int ax, int ay, int bx, int by, 
-int cx, int cy, int x, int y) {
+boolean insideTriangle(int ax, int ay, int bx, int by, int cx, int cy, int x, int y) {
   /* figure out if a point is inside of a triangle.
    make a triangle out each of the vertexes and the x,y 
    of the point to be diescovered.  sum area.  if equal, 
