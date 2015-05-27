@@ -1,83 +1,76 @@
 class Tint {
-  int r = 16;
-  int g = 16;
-  int b = 16;
-  int step = 8;
+  int hueDelta = 1;
+  int saturationDelta = 0;
+  int brightnessDelta = 0;
 
-  void moreRed() {
-    r += step;
-    if (r > 255) { 
-      r = 255;
+  color more(color baseColor) {
+    float h = hue(baseColor);
+    float s = saturation(baseColor);
+    float b = brightness(baseColor);
+    h += hueDelta;
+    s += saturationDelta;
+    b += brightnessDelta;
+    h %= 100;
+    if (s > 99) {
+      s = 99;
     }
-  }
-  void moreGreen() {
-    g += step;
-    if (g > 255) { 
-      g = 255;
+    if (b > 99) {
+      b = 99;
     }
+    return color(h, s, b);
   }
-  void moreBlue() {
-    b += step;
-    if (b > 255) { 
-      b = 255;
+  color less(color baseColor) {
+    float h = hue(baseColor);
+    float s = saturation(baseColor);
+    float b = brightness(baseColor);
+    h -= hueDelta;
+    s -= saturationDelta;
+    b -= brightnessDelta;
+    h %= 100;
+    if (s < 0) {
+      s = 0;
     }
-  }
-  void lessRed() {
-    r -= step;
-    if (r < 0) { 
-      r = 0;
-    }
-  }
-  void lessGreen() {
-    g -= step;
-    if (g < 0) { 
-      g = 0;
-    }
-  }
-  void lessBlue() {
-    b -= step;
-    if (b < 0) { 
+    if (b < 0) {
       b = 0;
     }
+    return color(h, s, b);
   }
 
-  color lighten(color baseColor) {
-    float redBase = (baseColor >> 16) & 0xFF;  // Fast way of getting red(baseColor)
-    float greenBase = (baseColor >> 8) & 0xFF;   // Fast way of getting green(baseColor)
-    float blueBase = baseColor & 0xFF;          // Fast way of getting blue(baseColor)
-    
-    redBase += r;
-    greenBase += g;
-    blueBase += b;
-    if (redBase >= 255) {
-      redBase = 255;
+  void moreHue() {  //hue variables should work like endless knobs - rotate around forever.
+    hueDelta++;
+    if (hueDelta > 99){
+      hueDelta = 99;
     }
-    if (greenBase >= 255) {
-      greenBase = 255;
-    }
-    if (blueBase >= 255) {
-      blueBase = 255;
-    }
-    return color(redBase, greenBase, blueBase);
   }
-
-  color darken(color baseColor) {
-    float redBase = (baseColor >> 16) & 0xFF;   // Fast way of getting red(baseColor)
-    float greenBase = (baseColor >> 8) & 0xFF;  // Fast way of getting green(baseColor)
-    float blueBase = baseColor & 0xFF;          // Fast way of getting blue(baseColor)
-    redBase -= r;
-    greenBase -= g;
-    blueBase -= b;
-    if (redBase <= 0) {
-      redBase = 0;
+  void lessHue() {
+    hueDelta--;
+    if (hueDelta < 0){
+      hueDelta = 0;
     }
-    if (greenBase <= 0) {
-      greenBase = 0;
+  }
+  void moreSaturation() {
+    saturationDelta++;
+    if (saturationDelta > 99) {
+      saturationDelta = 99;
     }
-    if (blueBase <= 0) {
-      blueBase = 0;
+  }
+  void lessSaturation() {
+    saturationDelta--;
+    if (saturationDelta < 0) {
+      saturationDelta = 0;
     }
-    return color(redBase, greenBase, blueBase);
+  }
+  void brighter() {
+    brightnessDelta++;
+    if (brightnessDelta > 100) {
+      brightnessDelta = 100;
+    }
+  }
+  void darker() {
+    brightnessDelta--;
+    if (brightnessDelta < 0) {
+      brightnessDelta = 0;
+    }
   }
 }
 

@@ -1,11 +1,11 @@
 Tint myTint = new Tint();
 
 void setup() {
+  colorMode(HSB, 100);
   frame.setResizable(true);
   size(500, 500);
-  background(255);
-  frameRate(60);
-  color testColor = color(1, 2, 3);
+  background(50,50,50);
+  frameRate(30);
 }
 
 void draw() {
@@ -40,19 +40,19 @@ void draw() {
 
 void keyPressed() {
   if (key == 'q' || key == 'Q') {
-    myTint.moreRed();
+    myTint.moreHue();
   } else if (key == 'a' || key == 'A') {
-    myTint.lessRed();
+    myTint.lessHue();
   } else if (key == 'w' || key == 'W') {
-    myTint.moreGreen();
+    myTint.moreSaturation();
   } else if (key == 's' || key == 'S') {
-    myTint.lessGreen();
+    myTint.lessSaturation();
   } else if (key == 'e' || key == 'E') {
-    myTint.moreBlue();
+    myTint.brighter();
   } else if (key == 'd' || key == 'D') {
-    myTint.lessBlue();
-  } 
-  println ("tint: ", myTint.r, myTint.g, myTint.b);
+    myTint.darker();
+  }
+  println("tint: ", myTint.hueDelta, myTint.saturationDelta, myTint.brightnessDelta);
 }
 
 void triangleFill(int ax, int ay, int bx, int by, int cx, int cy) {
@@ -61,9 +61,9 @@ void triangleFill(int ax, int ay, int bx, int by, int cx, int cy) {
     (mouseX < width) && (mouseX > 0) &&
     (mouseY < height) && (mouseY > 0)) {
     if (mouseButton == LEFT) {
-      myFillColor = myTint.darken(myFillColor);
+      myFillColor = myTint.more(myFillColor);
     } else if (mouseButton == RIGHT) {
-      myFillColor = myTint.lighten(myFillColor);
+      myFillColor = myTint.less(myFillColor);
     }
     fill(myFillColor);
   } else {
