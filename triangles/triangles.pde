@@ -1,9 +1,11 @@
 Tint myTint = new Tint();
 
 void setup() {
-  size(950, 1000);
+  frame.setResizable(true);
+  size(500, 500);
   background(255);
   frameRate(60);
+  color testColor = color(1, 2, 3);
 }
 
 void draw() {
@@ -11,19 +13,15 @@ void draw() {
   int x = 0;
   int y = 0;
   noStroke();
-  for (int i=0; i < width; i += triangleSize) {
-    for (int j=0; j < height; j += triangleSize) {
+  for (int i=0; i < width + triangleSize; i += triangleSize) {
+    for (int j=0; j < height + triangleSize; j += triangleSize) {
       int ax = x;
       int ay = y + triangleSize;
       int bx = x + triangleSize; 
       int by = y + triangleSize;
       int cx = x + triangleSize/2;
       int cy = y;
-      if (mousePressed && insideTriangle(ax, ay, bx, by, cx, cy, mouseX, mouseY)) {
-        fill(triangleFill());
-      } else {
-        noFill();
-      }
+      triangleFill(ax, ay, bx, by, cx, cy);
       triangle(ax, ay, bx, by, cx, cy);
       ax = x;
       ay = y + triangleSize;
@@ -31,11 +29,7 @@ void draw() {
       by = y;
       cx = x + triangleSize/2;
       cy = y;
-      if (mousePressed && insideTriangle(ax, ay, bx, by, cx, cy, mouseX, mouseY)) {
-        fill(triangleFill());
-      } else {
-        noFill();
-      }
+      triangleFill(ax, ay, bx, by, cx, cy);
       triangle(ax, ay, bx, by, cx, cy);
       y += triangleSize;
     }
@@ -61,21 +55,26 @@ void keyPressed() {
   println ("tint: ", myTint.r, myTint.g, myTint.b);
 }
 
-color triangleFill() {
-  color fillColor = get(mouseX, mouseY);
-  if (mouseButton == RIGHT) {
-    fillColor = myTint.addTint(fillColor);
-  } else if (mouseButton == LEFT) {
-    fillColor = myTint.removeTint(fillColor);
+void triangleFill(int ax, int ay, int bx, int by, int cx, int cy) {
+  color myFillColor = get(mouseX, mouseY);
+  if (mousePressed && insideTriangle(ax, ay, bx, by, cx, cy, mouseX, mouseY) &&
+    (mouseX < width) && (mouseX > 0) &&
+    (mouseY < height) && (mouseY > 0)) {
+    if (mouseButton == LEFT) {
+      myFillColor = myTint.darken(myFillColor);
+    } else if (mouseButton == RIGHT) {
+      myFillColor = myTint.lighten(myFillColor);
+    }
+    fill(myFillColor);
+  } else {
+    noFill();
   }
-  return fillColor;
 }
 
 boolean insideTriangle(int ax, int ay, int bx, int by, int cx, int cy, int x, int y) {
   /* figure out if a point is inside of a triangle.
-   make a triangle out each of the vertexes and the x,y 
-   of the point to be diescovered.  sum area.  if equal, 
-   point is inside.  if greater, it is not.
+   make a triangle out each of the vertexes and the x,y of the point to be discovered.  
+   sum area.  if equal to area of main triangle, point is inside.  if greater, it is not.
    */
   float total = triangleArea(ax, ay, bx, by, cx, cy);
   float ta = triangleArea(x, y, bx, by, cx, cy);

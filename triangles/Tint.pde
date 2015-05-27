@@ -41,10 +41,11 @@ class Tint {
     }
   }
 
-  color addTint(color baseColor) {
-    int redBase = (baseColor >> 16) & 0xFF;  // Fast way of getting red(baseColor)
-    int greenBase = (baseColor >> 8) & 0xFF;   // Fast way of getting green(baseColor)
-    int blueBase = baseColor & 0xFF;          // Fast way of getting blue(baseColor)
+  color lighten(color baseColor) {
+    float redBase = (baseColor >> 16) & 0xFF;  // Fast way of getting red(baseColor)
+    float greenBase = (baseColor >> 8) & 0xFF;   // Fast way of getting green(baseColor)
+    float blueBase = baseColor & 0xFF;          // Fast way of getting blue(baseColor)
+    
     redBase += r;
     greenBase += g;
     blueBase += b;
@@ -60,10 +61,10 @@ class Tint {
     return color(redBase, greenBase, blueBase);
   }
 
-  color removeTint(color baseColor) {
-    int redBase = (baseColor >> 16) & 0xFF;   // Fast way of getting red(baseColor)
-    int greenBase = (baseColor >> 8) & 0xFF;  // Fast way of getting green(baseColor)
-    int blueBase = baseColor & 0xFF;          // Fast way of getting blue(baseColor)
+  color darken(color baseColor) {
+    float redBase = (baseColor >> 16) & 0xFF;   // Fast way of getting red(baseColor)
+    float greenBase = (baseColor >> 8) & 0xFF;  // Fast way of getting green(baseColor)
+    float blueBase = baseColor & 0xFF;          // Fast way of getting blue(baseColor)
     redBase -= r;
     greenBase -= g;
     blueBase -= b;
